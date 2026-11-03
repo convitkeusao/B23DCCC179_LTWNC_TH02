@@ -44,7 +44,7 @@ const ExerciseRowComponent = ({ index, style, data }: ListChildComponentProps<Ex
 
       <div className="exercise-actions">
         <button type="button" onClick={handleStart}>
-          Bắt đầu
+          BĐ
         </button>
         <button
           type="button"

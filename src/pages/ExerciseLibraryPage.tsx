@@ -11,11 +11,13 @@ export type SortMode = 'default' | 'name' | 'duration';
 export type ExerciseLibraryPageProps = {
   keyword: string;
   onKeywordChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onAddToWorkout: (exercise: Exercise) => void;
 };
 
 export function ExerciseLibraryPage({
   keyword,
   onKeywordChange,
+  onAddToWorkout,
 }: ExerciseLibraryPageProps) {
   const [group, setGroup] = useState<'Tất cả' | MuscleGroup>('Tất cả');
   const [sortMode, setSortMode] = useState<SortMode>('default');
@@ -53,7 +55,7 @@ export function ExerciseLibraryPage({
   };
 
   const handleAddToWorkout = (exercise: Exercise) => {
-    console.log('Add to workout:', exercise.id);
+    onAddToWorkout(exercise);
   };
 
   return (
