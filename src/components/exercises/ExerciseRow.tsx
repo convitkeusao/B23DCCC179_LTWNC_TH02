@@ -5,6 +5,7 @@ import { formatDuration } from '../../utils/format';
 
 export type ExerciseRowData = {
   exercises: Exercise[];
+  savedIds: Set<string>;
   onStart: (exercise: Exercise) => void;
   onSave: (exercise: Exercise) => void;
   onAddToWorkout: (exercise: Exercise) => void;
@@ -36,15 +37,16 @@ const ExerciseRowComponent = ({ index, style, data }: ListChildComponentProps<Ex
       <div className="exercise-main">
         <span className="exercise-name">{exercise.name}</span>
         <span className="exercise-meta">
-          {exercise.trainer} · {exercise.group}
+          {exercise.group}
         </span>
       </div>
 
+      <span className="exercise-trainer">{exercise.trainer}</span>
       <span className="exercise-duration">{formatDuration(exercise.duration)}</span>
 
       <div className="exercise-actions">
         <button type="button" onClick={handleStart}>
-          BĐ
+          Bắt đầu
         </button>
         <button
           type="button"
@@ -52,7 +54,7 @@ const ExerciseRowComponent = ({ index, style, data }: ListChildComponentProps<Ex
           onClick={handleSave}
           aria-label={`Lưu ${exercise.name}`}
         >
-          ☆
+          {data.savedIds.has(exercise.id) ? '★' : '☆'}
         </button>
         <button
           type="button"

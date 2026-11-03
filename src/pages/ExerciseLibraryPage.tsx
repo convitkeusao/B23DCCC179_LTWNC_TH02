@@ -3,8 +3,9 @@ import type { ChangeEvent } from 'react';
 import { ExerciseFilters } from '../components/exercises/ExerciseFilters';
 import { ExerciseList } from '../components/exercises/ExerciseList';
 import { EXERCISES } from '../data/exercises';
-import type { Exercise, MuscleGroup } from '../types';
+import { useSavedStore } from '../features/saved/useSavedStore';
 import { useDebounce } from '../hooks/useDebounce';
+import type { Exercise, MuscleGroup } from '../types';
 
 export type SortMode = 'default' | 'name' | 'duration';
 
@@ -21,7 +22,10 @@ export function ExerciseLibraryPage({
 }: ExerciseLibraryPageProps) {
   const [group, setGroup] = useState<'Tất cả' | MuscleGroup>('Tất cả');
   const [sortMode, setSortMode] = useState<SortMode>('default');
-  const debouncedKeyword = useDebounce(keyword, 300);
+  const savedExercises = useSavedStore((state) => state.saved);
+  const toggleSaved = useSavedStore((state) => state.toggleSaved);
+  const savedIds = useMemo(() => savedExercises.map((item) => item.id), [savedExercises]);
+  const debouncedKeyword = useDebounce(keyword, 150);
 
   const filteredExercises = useMemo(() => {
     const normalizedKeyword = debouncedKeyword.trim().toLowerCase();
@@ -51,7 +55,7 @@ export function ExerciseLibraryPage({
   };
 
   const handleSave = (exercise: Exercise) => {
-    console.log('Saved:', exercise.id);
+    toggleSaved(exercise);
   };
 
   const handleAddToWorkout = (exercise: Exercise) => {
@@ -61,7 +65,11 @@ export function ExerciseLibraryPage({
   return (
     <section className="library-page">
       <div className="page-header">
-        <h1>Kho bài tập</h1>
+        <div>
+          <p className="eyebrow">WORKOUT TIMER</p>
+          <h1>Kho bài tập</h1>
+        </div>
+        <span className="build-tag">{filteredExercises.length.toLocaleString()} bài tập</span>
       </div>
 
       <ExerciseFilters
@@ -84,6 +92,7 @@ export function ExerciseLibraryPage({
       ) : (
         <ExerciseList
           exercises={filteredExercises}
+          savedIds={savedIds}
           onStart={handleStart}
           onSave={handleSave}
           onAddToWorkout={handleAddToWorkout}

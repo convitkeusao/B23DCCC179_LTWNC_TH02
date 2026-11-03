@@ -15,6 +15,11 @@ export function WorkoutPanel() {
   const tick = useWorkoutStore((state) => state.tick);
 
   const activeExercise = workout.find((exercise) => exercise.id === activeExerciseId) ?? workout[0] ?? null;
+  const activeIndex = activeExercise ? workout.findIndex((exercise) => exercise.id === activeExercise.id) : -1;
+  const finishedBeforeCurrent = activeIndex > 0 ? workout.slice(0, activeIndex).reduce((sum, exercise) => sum + exercise.duration, 0) : 0;
+  const sessionElapsed = activeExercise ? finishedBeforeCurrent + elapsedSeconds : 0;
+  const currentProgressPercent = activeExercise ? Math.min(100, (elapsedSeconds / activeExercise.duration) * 100) : 0;
+  const totalProgressPercent = totalSeconds > 0 ? Math.min(100, (sessionElapsed / totalSeconds) * 100) : 0;
 
   useEffect(() => {
     if (!isRunning) {
@@ -50,6 +55,15 @@ export function WorkoutPanel() {
 
       <div className="session-timer">
         <span>{formatDuration(elapsedSeconds)}</span>
+      </div>
+
+      <div className="session-progress-group">
+        <div className="session-progress" aria-label="Tiến độ bài tập hiện tại" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(currentProgressPercent)}>
+          <span className="session-progress-fill" style={{ width: `${currentProgressPercent}%` }} />
+        </div>
+        <div className="session-progress session-progress-secondary" aria-label="Tiến độ tổng buổi tập" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(totalProgressPercent)}>
+          <span className="session-progress-fill session-progress-fill-secondary" style={{ width: `${totalProgressPercent}%` }} />
+        </div>
       </div>
 
       <div className="session-controls">

@@ -1,39 +1,51 @@
 import { useState } from 'react';
 import './App.css';
 import { WorkoutPanel } from './components/workout/WorkoutPanel';
-import { AppProvider, useAppContext } from './context/AppContext';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import RoutineDetailPage from './features/routines/RoutineDetailPage';
 import { ExerciseLibraryPage } from './pages/ExerciseLibraryPage';
 import { useWorkoutStore } from './store/workoutStore';
 
 function AppContent() {
   const [keyword, setKeyword] = useState('');
-  const { theme, toggleTheme } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
   const addToWorkout = useWorkoutStore((state) => state.addToWorkout);
 
   return (
     <div className={`app-shell ${theme}`}>
-      <div className="app-window">
-        <div className="app-topbar">
+      <div className="app-frame">
+        <header className="app-topbar">
           <div className="app-topbar-left">
-            <span className="window-dot red" />
-            <span className="window-dot yellow" />
-            <span className="window-dot green" />
-            <div className="browser-tab">Workout Timer</div>
+            <span className="brand-mark">W</span>
+            <div className="brand-copy">
+              <strong>Workout Timer</strong>
+              <small>Routine board</small>
+            </div>
           </div>
 
-          <button type="button" className="theme-toggle" onClick={toggleTheme}>
-            {theme === 'light' ? 'Tối' : 'Sáng'}
-          </button>
-        </div>
+          <nav className="topbar-nav" aria-label="Main navigation">
+            <span className="active-nav">Library</span>
+            <span>Session</span>
+            <span>Plans</span>
+          </nav>
 
-        <div className="app-layout">
+          <button type="button" className="theme-toggle" onClick={toggleTheme}>
+            {theme === 'light' ? 'Dark mode' : 'Light mode'}
+          </button>
+        </header>
+
+        <main className="app-layout">
           <ExerciseLibraryPage
             keyword={keyword}
             onKeywordChange={(event) => setKeyword(event.target.value)}
             onAddToWorkout={addToWorkout}
           />
-          <WorkoutPanel />
-        </div>
+
+          <aside className="right-stack">
+            <WorkoutPanel />
+            <RoutineDetailPage />
+          </aside>
+        </main>
       </div>
     </div>
   );
@@ -41,9 +53,9 @@ function AppContent() {
 
 function App() {
   return (
-    <AppProvider>
+    <ThemeProvider>
       <AppContent />
-    </AppProvider>
+    </ThemeProvider>
   );
 }
 
