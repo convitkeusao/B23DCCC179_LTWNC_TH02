@@ -4,7 +4,7 @@ import { useSessionStore } from '../session/useSessionStore';
 
 export default function LibraryPage() {
   const [keyword, setKeyword] = useState('');
-  const addToWorkout = useSessionStore((state) => state.addToWorkout);
+  const addToWorkout = useSessionStore((state) => state.addToSession);
 
   return (
     <ExerciseLibraryPage

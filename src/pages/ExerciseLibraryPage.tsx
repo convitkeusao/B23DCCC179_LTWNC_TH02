@@ -22,9 +22,8 @@ export function ExerciseLibraryPage({
 }: ExerciseLibraryPageProps) {
   const [group, setGroup] = useState<'Tất cả' | MuscleGroup>('Tất cả');
   const [sortMode, setSortMode] = useState<SortMode>('default');
-  const savedExercises = useSavedStore((state) => state.saved);
-  const toggleSaved = useSavedStore((state) => state.toggleSaved);
-  const savedIds = useMemo(() => savedExercises.map((item) => item.id), [savedExercises]);
+  const savedIds = useSavedStore((state) => state.ids);
+  const toggleSaved = useSavedStore((state) => state.toggle);
   const debouncedKeyword = useDebounce(keyword, 150);
 
   const filteredExercises = useMemo(() => {
@@ -55,7 +54,7 @@ export function ExerciseLibraryPage({
   };
 
   const handleSave = (exercise: Exercise) => {
-    toggleSaved(exercise);
+    toggleSaved(exercise.id);
   };
 
   const handleAddToWorkout = (exercise: Exercise) => {

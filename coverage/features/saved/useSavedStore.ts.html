@@ -34,9 +34,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">27.27% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>3/11</span>
             </div>
         
             
@@ -55,9 +55,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/7</span>
+                <span class='fraction'>3/9</span>
             </div>
         
             
@@ -104,7 +104,8 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,9 +122,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -133,37 +131,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Exercise } from '../../types';
 &nbsp;
-type SavedState = {
-  saved: Exercise[];
-  toggleSaved: (exercise: Exercise) =&gt; void;
-  removeSaved: (exerciseId: string) =&gt; void;
+export type SavedState = {
+  ids: string[];
+  toggle: (id: string) =&gt; void;
+  isSaved: (id: string) =&gt; boolean;
+  clear: () =&gt; void;
 };
 &nbsp;
 export const useSavedStore = create&lt;SavedState&gt;()(
   persist(
-    (set) =&gt; ({
-      saved: [],
-<span class="fstat-no" title="function not covered" >      toggleSaved: (e</span>xercise) =&gt;
+    (set, get) =&gt; ({
+      ids: [],
+<span class="fstat-no" title="function not covered" >      toggle: (i</span>d) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        set((s</span>tate) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-          saved: state.saved.<span class="fstat-no" title="function not covered" >some((i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.id === exercise.id)</span>
-            ? state.saved.<span class="fstat-no" title="function not covered" >filter((i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.id !== exercise.id)</span>
-            : [...state.saved, exercise],
+          ids: state.ids.includes(id) ? state.ids.<span class="fstat-no" title="function not covered" >filter((i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item !== id)</span> : [...state.ids, id],
         })),
-<span class="fstat-no" title="function not covered" >      removeSaved: (e</span>xerciseId) =&gt;
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        set((s</span>tate) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-          saved: state.saved.<span class="fstat-no" title="function not covered" >filter((i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.id !== exerciseId)</span>,
-        })),
+<span class="fstat-no" title="function not covered" >      isSaved: (i</span>d) =&gt; <span class="cstat-no" title="statement not covered" >get().ids.includes(id),</span>
+<span class="fstat-no" title="function not covered" >      clear: () =&gt; <span class="cstat-no" title="statement not covered" >s</span>et({ ids: [] }),</span>
     }),
     {
-      name: 'workout-saved-store',
+      name: 'workout-saved',
     },
   ),
 );
+&nbsp;
+export const <span class="fstat-no" title="function not covered" >useSavedExercises = () =&gt; {</span>
+  const savedIds = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useSavedStore((s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.ids)</span>;</span>
+<span class="cstat-no" title="statement not covered" >  return savedIds;</span>
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -171,7 +174,7 @@ export const useSavedStore = create&lt;SavedState&gt;()(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-11-03T09:09:45.389Z
+                at 2026-11-03T09:25:55.633Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,30 +1,31 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Exercise } from '../../types';
 
-type SavedState = {
-  saved: Exercise[];
-  toggleSaved: (exercise: Exercise) => void;
-  removeSaved: (exerciseId: string) => void;
+export type SavedState = {
+  ids: string[];
+  toggle: (id: string) => void;
+  isSaved: (id: string) => boolean;
+  clear: () => void;
 };
 
 export const useSavedStore = create<SavedState>()(
   persist(
-    (set) => ({
-      saved: [],
-      toggleSaved: (exercise) =>
+    (set, get) => ({
+      ids: [],
+      toggle: (id) =>
         set((state) => ({
-          saved: state.saved.some((item) => item.id === exercise.id)
-            ? state.saved.filter((item) => item.id !== exercise.id)
-            : [...state.saved, exercise],
+          ids: state.ids.includes(id) ? state.ids.filter((item) => item !== id) : [...state.ids, id],
         })),
-      removeSaved: (exerciseId) =>
-        set((state) => ({
-          saved: state.saved.filter((item) => item.id !== exerciseId),
-        })),
+      isSaved: (id) => get().ids.includes(id),
+      clear: () => set({ ids: [] }),
     }),
     {
-      name: 'workout-saved-store',
+      name: 'workout-saved',
     },
   ),
 );
+
+export const useSavedExercises = () => {
+  const savedIds = useSavedStore((state) => state.ids);
+  return savedIds;
+};

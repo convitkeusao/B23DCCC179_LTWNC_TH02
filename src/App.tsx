@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { Suspense, lazy } from 'react';
+import { BrowserRouter, NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { WorkoutPanel } from './components/workout/WorkoutPanel';
+import { SessionBar } from './features/session/SessionBar';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import RoutineDetailPage from './features/routines/RoutineDetailPage';
-import { ExerciseLibraryPage } from './pages/ExerciseLibraryPage';
-import { useWorkoutStore } from './store/workoutStore';
+import { RoutineProvider } from './contexts/RoutineContext';
 
-function AppContent() {
-  const [keyword, setKeyword] = useState('');
+const LibraryPage = lazy(() => import('./features/library/LibraryPage'));
+const SavedPage = lazy(() => import('./features/saved/SavedPage'));
+const RoutinesPage = lazy(() => import('./features/routines/RoutinesPage'));
+const RoutineDetailPage = lazy(() => import('./features/routines/RoutineDetailPage'));
+
+function AppShell() {
   const { theme, toggleTheme } = useTheme();
-  const addToWorkout = useWorkoutStore((state) => state.addToWorkout);
 
   return (
     <div className={`app-shell ${theme}`}>
@@ -24,9 +26,15 @@ function AppContent() {
           </div>
 
           <nav className="topbar-nav" aria-label="Main navigation">
-            <span className="active-nav">Library</span>
-            <span>Session</span>
-            <span>Plans</span>
+            <NavLink to="/" end className={({ isActive }) => (isActive ? 'active-nav' : '')}>
+              Kho bài tập
+            </NavLink>
+            <NavLink to="/saved" className={({ isActive }) => (isActive ? 'active-nav' : '')}>
+              Đã lưu
+            </NavLink>
+            <NavLink to="/routines" className={({ isActive }) => (isActive ? 'active-nav' : '')}>
+              Giáo án
+            </NavLink>
           </nav>
 
           <button type="button" className="theme-toggle" onClick={toggleTheme}>
@@ -35,17 +43,18 @@ function AppContent() {
         </header>
 
         <main className="app-layout">
-          <ExerciseLibraryPage
-            keyword={keyword}
-            onKeywordChange={(event) => setKeyword(event.target.value)}
-            onAddToWorkout={addToWorkout}
-          />
-
-          <aside className="right-stack">
-            <WorkoutPanel />
-            <RoutineDetailPage />
-          </aside>
+          <Suspense fallback={<div className="page-loading">Đang tải trang...</div>}>
+            <Routes>
+              <Route path="/" element={<LibraryPage />} />
+              <Route path="/saved" element={<SavedPage />} />
+              <Route path="/routines" element={<RoutinesPage />} />
+              <Route path="/routines/:id" element={<RoutineDetailPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </main>
+
+        <SessionBar />
       </div>
     </div>
   );
@@ -53,9 +62,13 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        <RoutineProvider>
+          <AppShell />
+        </RoutineProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

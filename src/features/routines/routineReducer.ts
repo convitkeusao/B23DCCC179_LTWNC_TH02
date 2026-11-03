@@ -1,42 +1,82 @@
-export type RoutineItem = {
+export type Routine = {
   id: string;
   name: string;
-  duration: number;
-};
-
-export type RoutineState = {
-  name: string;
-  items: RoutineItem[];
+  exerciseIds: string[];
 };
 
 export type RoutineAction =
-  | { type: 'set-name'; payload: string }
-  | { type: 'add-item'; payload: RoutineItem }
-  | { type: 'remove-item'; payload: string }
-  | { type: 'clear' };
+  | { type: 'createRoutine'; payload: { id: string; name: string } }
+  | { type: 'renameRoutine'; payload: { id: string; name: string } }
+  | { type: 'removeRoutine'; payload: string }
+  | { type: 'addExercise'; payload: { id: string; exerciseId: string } }
+  | { type: 'removeExercise'; payload: { id: string; exerciseId: string } };
+
+export type RoutineState = Routine[];
+
+export const initialRoutineState: RoutineState = [];
 
 export function routineReducer(state: RoutineState, action: RoutineAction): RoutineState {
   switch (action.type) {
-    case 'set-name':
-      return { ...state, name: action.payload };
-    case 'add-item':
-      return {
+    case 'createRoutine': {
+      const exists = state.some(
+        (item) => item.name.trim().toLowerCase() === action.payload.name.trim().toLowerCase(),
+      );
+
+      if (exists) {
+        return state;
+      }
+
+      return [
         ...state,
-        items: [...state.items, action.payload],
-      };
-    case 'remove-item':
-      return {
-        ...state,
-        items: state.items.filter((item) => item.id !== action.payload),
-      };
-    case 'clear':
-      return { ...state, items: [] };
+        {
+          id: action.payload.id,
+          name: action.payload.name.trim(),
+          exerciseIds: [],
+        },
+      ];
+    }
+
+    case 'renameRoutine': {
+      return state.map((routine) =>
+        routine.id === action.payload.id
+          ? { ...routine, name: action.payload.name.trim() }
+          : routine,
+      );
+    }
+
+    case 'removeRoutine': {
+      return state.filter((routine) => routine.id !== action.payload);
+    }
+
+    case 'addExercise': {
+      return state.map((routine) => {
+        if (routine.id !== action.payload.id) {
+          return routine;
+        }
+
+        if (routine.exerciseIds.includes(action.payload.exerciseId)) {
+          return routine;
+        }
+
+        return {
+          ...routine,
+          exerciseIds: [...routine.exerciseIds, action.payload.exerciseId],
+        };
+      });
+    }
+
+    case 'removeExercise': {
+      return state.map((routine) =>
+        routine.id === action.payload.id
+          ? {
+              ...routine,
+              exerciseIds: routine.exerciseIds.filter((id) => id !== action.payload.exerciseId),
+            }
+          : routine,
+      );
+    }
+
     default:
       return state;
   }
 }
-
-export const initialRoutineState: RoutineState = {
-  name: 'New routine',
-  items: [],
-};

@@ -1,12 +1,17 @@
-import { useEffect } from 'react';
-import type { ComponentType } from 'react';
+import type { Reducer } from 'react';
 
-export function withLogger<P extends object>(Component: ComponentType<P>, name: string) {
-  return function LoggedComponent(props: P) {
-    useEffect(() => {
-      console.log(`[${name}] mounted`);
-    }, []);
+export function withLogger<R, A>(reducer: Reducer<R, A>): Reducer<R, A> {
+  return (state, action) => {
+    if (import.meta.env.DEV) {
+      console.log('[routine action]', action);
+    }
 
-    return <Component {...props} />;
+    const nextState = reducer(state, action);
+
+    if (import.meta.env.DEV) {
+      console.log('[routine next state]', nextState);
+    }
+
+    return nextState;
   };
 }
