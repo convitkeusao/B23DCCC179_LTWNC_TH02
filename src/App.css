@@ -1,11 +1,75 @@
+:root {
+  --app-bg: #f3f1ea;
+  --panel-bg: rgba(245, 244, 236, 0.96);
+  --panel-border: #d7d2c4;
+  --panel-soft: rgba(255, 255, 255, 0.3);
+  --text: #1f1f1f;
+  --muted: #5d5d5d;
+  --button-bg: #f7f4ef;
+  --button-border: #c9c0ae;
+  --primary: #3a8f6d;
+  --primary-border: #357d5d;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme='dark'] {
+  --app-bg: #111827;
+  --panel-bg: rgba(31, 41, 55, 0.96);
+  --panel-border: rgba(148, 163, 184, 0.25);
+  --panel-soft: rgba(15, 23, 42, 0.5);
+  --text: #f3f4f6;
+  --muted: #cbd5e1;
+  --button-bg: #1f2937;
+  --button-border: #475569;
+  --primary: #22c55e;
+  --primary-border: #16a34a;
+  --shadow: rgba(0, 0, 0, 0.25);
+}
+
 .app-shell {
   width: 100%;
   min-height: 100vh;
-  background: #f3f1ea;
+  background: var(--app-bg);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 24px;
   box-sizing: border-box;
+  color: var(--text);
+}
+
+.app-topbar {
+  width: min(1280px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e6d876;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 12px 16px;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.app-topbar-left,
+.app-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-topbar-right {
+  font-weight: 600;
+  color: #3f3f3f;
+}
+
+.theme-toggle {
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  color: #1f1f1f;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .app-layout {
@@ -17,9 +81,9 @@
 }
 
 .library-page {
-  background: rgba(245, 244, 236, 0.96);
-  border: 1px solid #d7d2c4;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 16px 40px var(--shadow);
 }
 
 .page-header {
@@ -30,7 +94,7 @@
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
-  color: #1f1f1f;
+  color: var(--text);
 }
 
 .toolbar {
@@ -52,26 +116,26 @@
 .filter-field label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #3d3d3d;
+  color: var(--muted);
 }
 
 .search-field input,
 .filter-field select {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #c8c1b0;
+  border: 1px solid var(--button-border);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--panel-soft);
   padding: 10px 12px;
   font: inherit;
-  color: #1f1f1f;
+  color: var(--text);
 }
 
 .result-summary {
   margin: 0;
   padding: 0 28px 12px;
   font-size: 0.95rem;
-  color: #4b4b4b;
+  color: var(--muted);
 }
 
 .list-shell {
@@ -91,7 +155,7 @@
 
 .exercise-index {
   font-weight: 700;
-  color: #3a3a3a;
+  color: var(--muted);
 }
 
 .exercise-main {
@@ -102,7 +166,7 @@
 
 .exercise-name {
   font-weight: 700;
-  color: #1f1f1f;
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -110,7 +174,7 @@
 
 .exercise-meta {
   font-size: 0.8rem;
-  color: #5d5d5d;
+  color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -118,7 +182,7 @@
 
 .exercise-duration {
   font-weight: 700;
-  color: #1d4f3a;
+  color: var(--primary);
   text-align: center;
 }
 
@@ -130,9 +194,9 @@
 }
 
 .exercise-actions button {
-  border: 1px solid #c9c0ae;
-  background: #f7f4ef;
-  color: #1e1e1e;
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  color: var(--text);
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
@@ -140,7 +204,7 @@
 }
 
 .exercise-actions button:hover {
-  background: #efe8dd;
+  background: rgba(148, 163, 184, 0.15);
 }
 
 .icon-button {
@@ -150,17 +214,17 @@
 .empty-state {
   margin: 0 28px 28px;
   padding: 24px;
-  border: 1px dashed #c7beac;
+  border: 1px dashed var(--button-border);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.25);
-  color: #4a4a4a;
+  background: var(--panel-soft);
+  color: var(--muted);
   text-align: center;
 }
 
 .workout-panel {
-  background: rgba(245, 244, 236, 0.96);
-  border: 1px solid #d7d2c4;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 16px 40px var(--shadow);
   padding: 20px 18px;
 }
 
@@ -175,16 +239,16 @@
 .session-header h2 {
   margin: 0;
   font-size: 1.35rem;
-  color: #1d1d1d;
+  color: var(--text);
 }
 
 .ghost-button,
 .primary-button,
 .secondary-button,
 .remove-button {
-  border: 1px solid #c9c0ae;
-  background: #f7f4ef;
-  color: #1d1d1d;
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  color: var(--text);
   border-radius: 8px;
   cursor: pointer;
   font: inherit;
@@ -196,9 +260,9 @@
 }
 
 .primary-button {
-  background: #3a8f6d;
+  background: var(--primary);
   color: white;
-  border-color: #357d5d;
+  border-color: var(--primary-border);
   padding: 10px 14px;
 }
 
@@ -210,7 +274,7 @@
 }
 
 .session-summary > div {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--panel-soft);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 10px;
   padding: 12px;
@@ -222,18 +286,18 @@
 .label {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #5d5d5d;
+  color: var(--muted);
 }
 
 .session-timer {
-  background: #eceadf;
+  background: rgba(148, 163, 184, 0.12);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 18px 10px;
   text-align: center;
   font-size: 1.7rem;
   font-weight: 700;
-  color: #1d1d1d;
+  color: var(--text);
   margin-bottom: 16px;
 }
 
@@ -254,14 +318,14 @@
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 8px;
   align-items: center;
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--panel-soft);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 10px;
   padding: 10px 12px;
 }
 
 .session-item.is-active {
-  border-color: #3a8f6d;
+  border-color: var(--primary);
   background: rgba(58, 143, 109, 0.08);
 }
 
@@ -280,7 +344,7 @@
 .session-item-main span,
 .session-item-meta {
   font-size: 0.75rem;
-  color: #5d5d5d;
+  color: var(--muted);
 }
 
 .session-item-meta {
@@ -299,8 +363,8 @@
 
 .empty-session {
   margin: 0;
-  color: #5a5a5a;
-  background: rgba(255, 255, 255, 0.2);
+  color: var(--muted);
+  background: var(--panel-soft);
   border: 1px dashed rgba(0, 0, 0, 0.12);
   border-radius: 10px;
   padding: 20px 12px;
