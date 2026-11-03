@@ -12,22 +12,28 @@ function AppContent() {
 
   return (
     <div className={`app-shell ${theme}`}>
-      <div className="app-topbar">
-        <div className="app-topbar-left">
+      <div className="app-window">
+        <div className="app-topbar">
+          <div className="app-topbar-left">
+            <span className="window-dot red" />
+            <span className="window-dot yellow" />
+            <span className="window-dot green" />
+            <div className="browser-tab">Workout Timer</div>
+          </div>
+
           <button type="button" className="theme-toggle" onClick={toggleTheme}>
             {theme === 'light' ? 'Tối' : 'Sáng'}
           </button>
         </div>
 
-      </div>
-
-      <div className="app-layout">
-        <ExerciseLibraryPage
-          keyword={keyword}
-          onKeywordChange={(event) => setKeyword(event.target.value)}
-          onAddToWorkout={addToWorkout}
-        />
-        <WorkoutPanel />
+        <div className="app-layout">
+          <ExerciseLibraryPage
+            keyword={keyword}
+            onKeywordChange={(event) => setKeyword(event.target.value)}
+            onAddToWorkout={addToWorkout}
+          />
+          <WorkoutPanel />
+        </div>
       </div>
     </div>
   );

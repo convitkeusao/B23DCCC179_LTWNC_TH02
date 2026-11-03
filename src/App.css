@@ -1,5 +1,7 @@
 :root {
-  --app-bg: #f3f1ea;
+  --app-bg: #2d2f32;
+  --window-bg: #e8e3d8;
+  --window-panel: rgba(248, 246, 241, 0.82);
   --panel-bg: rgba(245, 244, 236, 0.96);
   --panel-border: #d7d2c4;
   --panel-soft: rgba(255, 255, 255, 0.3);
@@ -9,11 +11,13 @@
   --button-border: #c9c0ae;
   --primary: #3a8f6d;
   --primary-border: #357d5d;
-  --shadow: rgba(0, 0, 0, 0.08);
+  --shadow: rgba(0, 0, 0, 0.18);
 }
 
 :root[data-theme='dark'] {
   --app-bg: #111827;
+  --window-bg: #1f2937;
+  --window-panel: rgba(31, 41, 55, 0.88);
   --panel-bg: rgba(31, 41, 55, 0.96);
   --panel-border: rgba(148, 163, 184, 0.25);
   --panel-soft: rgba(15, 23, 42, 0.5);
@@ -31,23 +35,31 @@
   min-height: 100vh;
   background: var(--app-bg);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 24px;
+  justify-content: center;
+  padding: 28px;
   box-sizing: border-box;
   color: var(--text);
 }
 
-.app-topbar {
+.app-window {
   width: min(1280px, 100%);
+  background: var(--window-bg);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  box-shadow: 0 22px 45px var(--shadow);
+}
+
+.app-topbar {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #e6d876;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 12px 16px;
+  background: rgba(240, 236, 229, 0.96);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 10px 16px;
   box-sizing: border-box;
-  margin-bottom: 12px;
 }
 
 .app-topbar-left,
@@ -57,27 +69,46 @@
   gap: 12px;
 }
 
-.app-topbar-right {
+.window-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.window-dot.red { background: #ed6a5f; }
+.window-dot.yellow { background: #f4c75b; }
+.window-dot.green { background: #62c554; }
+
+.browser-tab {
+  margin-left: 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: #3f3f3f;
+  color: var(--muted);
 }
 
 .theme-toggle {
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.45);
   color: #1f1f1f;
-  padding: 8px 14px;
+  padding: 7px 12px;
   cursor: pointer;
   font-weight: 600;
 }
 
 .app-layout {
-  width: min(1280px, 100%);
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 2.2fr) minmax(280px, 1fr);
   gap: 20px;
   align-items: start;
+  padding: 18px 18px 0;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .library-page {
